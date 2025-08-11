@@ -8,6 +8,24 @@ async function getData(): Promise<Bulk_Document[]> {
       id: 1,
       date_range: [new Date("2023-01-01"), new Date("2023-01-31")],
       document_no: 100,
+      status: "Unpaid",
+    },
+    {
+      id: 2,
+      date_range: [new Date("2023-01-01"), new Date("2023-01-31")],
+      document_no: 100,
+      status: "Unpaid",
+    },
+    {
+      id: 3,
+      date_range: [new Date("2023-01-01"), new Date("2023-01-31")],
+      document_no: 100,
+      status: "Paid",
+    },
+    {
+      id: 4,
+      date_range: [new Date("2023-01-01"), new Date("2023-01-31")],
+      document_no: 100,
       status: "Paid",
     },
   ]
