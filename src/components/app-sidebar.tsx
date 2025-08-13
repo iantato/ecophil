@@ -1,85 +1,85 @@
-import Link from "next/link"
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarMenuSub,
-  SidebarMenuSubItem,
-  SidebarMenuSubButton,
-  SidebarSeparator
-} from "@/components/ui/sidebar"
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible"
-import {
-  FileText,
-  Home,
-  ChevronRight
-} from "lucide-react"
+'use client'
 
-const items = [
-  {
-    title: "Home",
-    url: "#",
-    icon: Home
-  },
-  {
-    title: "Documents",
-    url: "/documents",
-    icon: FileText
-  }
-]
+import Link from "next/link"
+import { Badge } from "@/components/ui/badge"
+import { Bot } from "lucide-react"
+import { useScraperStatus } from "@/hooks/use-scraper-status"
+
+import {
+  	Sidebar,
+	SidebarContent,
+	SidebarGroup,
+	SidebarGroupContent,
+	SidebarGroupLabel,
+	SidebarMenu,
+	SidebarMenuButton,
+	SidebarMenuItem,
+	SidebarMenuBadge
+} from "@/components/ui/sidebar"
+
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogClose
+} from "@/components/ui/dialog"
+
 
 export function AppSidebar() {
-  return (
-    <Sidebar>
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
 
-              <Collapsible className="group/documents">
+	const domain = 'example.com'
+	const wsUrl = `ws://${domain}/ws/scraper`
+	const status = useScraperStatus(wsUrl)
 
-                <CollapsibleTrigger className="flex items-center justify-between w-full hover:bg-sidebar-accent hover:text-sidebar-accent-foreground rounded-md p-2 cursor-pointer">
-                  <div className="flex items-center gap-2">
-                    <FileText className="h-4 w-4"/>
-                    <span className="font-medium">Documents</span>
-                  </div>
-                  <ChevronRight className="h-4 w-4 transition-transform duration-240 group-data-[state=open]/documents:rotate-90" />
-                </CollapsibleTrigger>
+	const dot = status === 'online' ? 'bg-emerald-500' : 'bg-rose-500'
 
-                <CollapsibleContent>
-                  <SidebarMenuSub>
-                    <SidebarMenuSubButton asChild>
-                      <Link href="/documents/#">
-                        <span>Liquidation & Summary</span>
-                      </Link>
-                    </SidebarMenuSubButton>
-                  </SidebarMenuSub>
+	return (
+		<Sidebar collapsible="icon">
+			<SidebarContent>
+				<SidebarGroup>
+					<SidebarGroupLabel>Application</SidebarGroupLabel>
+					<SidebarGroupContent>
+						<SidebarMenu>
+							<Dialog>
+								<SidebarMenuItem>
+									<DialogTrigger asChild>
+										<SidebarMenuButton asChild>
+											<button type="button" className="font-medium cursor-pointer">
+												<Bot size={24} strokeWidth={2.5} />
+												Scraper
+												<SidebarMenuBadge className="border-gray-200 border-1">
+													<span className={`mr-1 inline-block size-2 rounded-full ${dot}`} />
+													{status}
+												</SidebarMenuBadge>
+											</button>
+										</SidebarMenuButton>
+									</DialogTrigger>
+								</SidebarMenuItem>
 
-                  <SidebarMenuSub>
-                    <SidebarMenuSubButton asChild>
-                      <Link href="/documents/#">
-                        <span>VBS OneStop</span>
-                      </Link>
-                    </SidebarMenuSubButton>
-                  </SidebarMenuSub>
-                </CollapsibleContent>
-
-              </Collapsible>
-
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
-    </Sidebar>
+								<DialogContent>
+									<DialogHeader>
+										<DialogTitle>Scraper Status</DialogTitle>
+										<DialogDescription>
+											The scraper is currently {status}.
+										</DialogDescription>
+									</DialogHeader>
+									<DialogFooter>
+										<DialogClose asChild>
+											<Link href={`http://${domain}/scraper`} className="btn btn-primary">
+												View Scraper
+											</Link>
+										</DialogClose>
+									</DialogFooter>
+								</DialogContent>
+							</Dialog>
+						</SidebarMenu>
+					</SidebarGroupContent>
+				</SidebarGroup>
+			</SidebarContent>
+		</Sidebar>
   )
 }

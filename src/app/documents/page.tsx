@@ -1,41 +1,24 @@
-import { columns } from "./columns"
-import { Bulk_Document } from "./types"
-import { DataTable } from "./data-table"
+// import { columns } from "./columns"
+// import { Bulk_Document } from "./types"
+// import { DataTable } from "./data-table"
 
-async function getData(): Promise<Bulk_Document[]> {
-  return [
-    {
-      id: 1,
-      date_range: [new Date("2023-01-01"), new Date("2023-01-31")],
-      document_no: 100,
-      status: "Unpaid",
-    },
-    {
-      id: 2,
-      date_range: [new Date("2023-01-01"), new Date("2023-01-31")],
-      document_no: 100,
-      status: "Unpaid",
-    },
-    {
-      id: 3,
-      date_range: [new Date("2023-01-01"), new Date("2023-01-31")],
-      document_no: 100,
-      status: "Paid",
-    },
-    {
-      id: 4,
-      date_range: [new Date("2023-01-01"), new Date("2023-01-31")],
-      document_no: 100,
-      status: "Paid",
-    },
-  ]
-}
 
-export default async function DocumentsPage() {
-    const data = await getData()
-    return (
-        <div className="container mx-auto py-10">
-            <DataTable columns={columns} data={data} />
-        </div>
-    )
-}
+// async function getData(): Promise<Bulk_Document[]> {
+//   return [
+//     {
+//       id: 'LIQ-EXPORT-2025-001',
+//       date_range: [new Date("2023-01-01"), new Date("2023-01-31")],
+//       document_no: 100,
+//       status: "Unpaid",
+//     }
+//   ]
+// }
+
+// export default async function DocumentsPage() {
+//     const data = await getData()
+//     return (
+//         <div className="container mx-auto py-10">
+//             <DataTable columns={columns} data={data} />
+//         </div>
+//     )
+// }
