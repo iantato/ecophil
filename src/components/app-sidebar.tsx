@@ -1,7 +1,7 @@
 'use client'
 
-import Link from "next/link"
-import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import { Bot } from "lucide-react"
 import { useScraperStatus } from "@/hooks/use-scraper-status"
 
@@ -18,21 +18,21 @@ import {
 } from "@/components/ui/sidebar"
 
 import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-  DialogClose
+	Dialog,
+	DialogTrigger,
+	DialogContent,
+	DialogHeader,
+	DialogTitle,
+	DialogDescription,
+	DialogFooter,
+	DialogClose
 } from "@/components/ui/dialog"
 
 
 export function AppSidebar() {
 
 	const domain = 'example.com'
-	const wsUrl = `ws://${domain}/ws/scraper`
+	const wsUrl = `wss://${domain}/ws/scraper`
 	const status = useScraperStatus(wsUrl)
 
 	const dot = status === 'online' ? 'bg-emerald-500' : 'bg-rose-500'
@@ -62,16 +62,20 @@ export function AppSidebar() {
 
 								<DialogContent>
 									<DialogHeader>
-										<DialogTitle>Scraper Status</DialogTitle>
+										<DialogTitle>Change Scraper API Domain</DialogTitle>
 										<DialogDescription>
-											The scraper is currently {status}.
+											Change the current domain of the scraper API. This will restart the scraper with the new domain.
 										</DialogDescription>
 									</DialogHeader>
+									<div>
+										<Input type="text" className="input font-mono" placeholder="https://www.example.com" />
+									</div>
 									<DialogFooter>
 										<DialogClose asChild>
-											<Link href={`http://${domain}/scraper`} className="btn btn-primary">
-												View Scraper
-											</Link>
+											<Button variant="outline">Cancel</Button>
+										</DialogClose>
+										<DialogClose asChild>
+											<Button type="submit">Submit</Button>
 										</DialogClose>
 									</DialogFooter>
 								</DialogContent>
