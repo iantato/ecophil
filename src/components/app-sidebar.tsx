@@ -1,5 +1,7 @@
 'use client'
 
+import { useEffect, useState } from "react"
+
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Bot } from "lucide-react"
@@ -31,8 +33,32 @@ import {
 
 export function AppSidebar() {
 
-	const domain = 'example.com'
-	const wsUrl = `wss://${domain}/ws/scraper`
+	const [domain, setDomain] = useState<string | null>(null)
+
+	useEffect(() => {
+		const ctrl = new AbortController()
+
+		async function fetchDomain() {
+			try {
+				const res = await fetch('/api/scraper-config')
+				if (!res.ok) {
+					console.error('Failed to fetch domain:', res.statusText)
+					return
+				}
+				const data = await res.json() as { domain: string }
+				setDomain(data.domain)
+			} catch (e) {
+				if ((e as any).name !== 'AbortError') console.error('fetchDomain error', e)
+			}
+		}
+
+		fetchDomain()
+		return () => {
+			ctrl.abort()
+		}
+	}, [])
+
+	const wsUrl = domain ? `wss://${domain}/ws/scraper` : null
 	const status = useScraperStatus(wsUrl)
 
 	const dot = status === 'online' ? 'bg-emerald-500' : 'bg-rose-500'

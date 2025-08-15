@@ -1,12 +1,23 @@
 import { useEffect, useState } from "react"
 
-type ScraperStatus = "online" | "offline"
+type ScraperStatus = "online" | "offline" | "unknown"
 
-export function useScraperStatus(wsUrl: string) {
-    const [status, setStatus] = useState<ScraperStatus>("offline")
+export function useScraperStatus(wsUrl?: string | null) {
+    const [status, setStatus] = useState<ScraperStatus>("unknown")
 
     useEffect(() => {
-        let ws: WebSocket | null = new WebSocket(wsUrl)
+        if (!wsUrl) {
+            setStatus("unknown")
+            return
+        }
+
+        let ws: WebSocket | null = null
+        try {
+            ws = new WebSocket(wsUrl)
+        } catch {
+            setStatus("offline")
+            return
+        }
 
         ws.onopen = () => setStatus("online")
         ws.onclose = () => setStatus("offline")
