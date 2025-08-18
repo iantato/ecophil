@@ -3,8 +3,13 @@
 import { useEffect, useState } from "react"
 
 import { Button } from "@/components/ui/button"
+
 import { Input } from "@/components/ui/input"
+
+import { toast } from "sonner"
+
 import { Bot } from "lucide-react"
+
 import { useScraperStatus } from "@/hooks/use-scraper-status"
 
 import {
@@ -30,17 +35,19 @@ import {
 	DialogClose
 } from "@/components/ui/dialog"
 
+import { DomainForm } from "./domain-form"
 
 export function AppSidebar() {
 
 	const [domain, setDomain] = useState<string | null>(null)
+	const [input, setInput] = useState('')
 
 	useEffect(() => {
 		const ctrl = new AbortController()
 
 		async function fetchDomain() {
 			try {
-				const res = await fetch('/api/scraper-config')
+				const res = await fetch('/api/scraper-domain')
 				if (!res.ok) {
 					console.error('Failed to fetch domain:', res.statusText)
 					return
@@ -73,37 +80,27 @@ export function AppSidebar() {
 							<Dialog>
 								<SidebarMenuItem>
 									<DialogTrigger asChild>
-										<SidebarMenuButton asChild>
-											<button type="button" className="font-medium cursor-pointer">
-												<Bot size={24} strokeWidth={2.5} />
-												Scraper
-												<SidebarMenuBadge className="border-gray-200 border-1">
-													<span className={`mr-1 inline-block size-2 rounded-full ${dot}`} />
-													{status}
-												</SidebarMenuBadge>
-											</button>
+										<SidebarMenuButton className="font-medium cursor-pointer">
+											<Bot size={24} strokeWidth={2.5}/>
+											Scraper
+											<SidebarMenuBadge className="border-gray-200 border-1">
+												<span className={`mr-1 inline-block size-2 rounded-full ${dot}`} />
+												{status}
+											</SidebarMenuBadge>
 										</SidebarMenuButton>
 									</DialogTrigger>
 								</SidebarMenuItem>
 
 								<DialogContent>
 									<DialogHeader>
-										<DialogTitle>Change Scraper API Domain</DialogTitle>
+										<DialogTitle className="select-none"> <span className="cursor-text">Change Scraper API Domain</span></DialogTitle>
+
 										<DialogDescription>
 											Change the current domain of the scraper API. This will restart the scraper with the new domain.
 										</DialogDescription>
 									</DialogHeader>
-									<div>
-										<Input type="text" className="input font-mono" placeholder="https://www.example.com" />
-									</div>
-									<DialogFooter>
-										<DialogClose asChild>
-											<Button variant="outline">Cancel</Button>
-										</DialogClose>
-										<DialogClose asChild>
-											<Button type="submit">Submit</Button>
-										</DialogClose>
-									</DialogFooter>
+
+									<DomainForm />
 								</DialogContent>
 							</Dialog>
 						</SidebarMenu>
