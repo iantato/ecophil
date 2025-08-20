@@ -1,8 +1,9 @@
+'server-only'
 import { Client, Databases } from 'node-appwrite'
 
 export function getServerDomainAppwrite() {
-    const endpoint = process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT
-    const projectId = process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID
+    const endpoint = process.env.APPWRITE_ENDPOINT
+    const projectId = process.env.APPWRITE_PROJECT_ID
     const databaseId = process.env.APPWRITE_DATABASE_ID
     const collectionId = process.env.APPWRITE_DOMAIN_COLLECTION_ID
     const apiKey = process.env.APPWRITE_API_KEY

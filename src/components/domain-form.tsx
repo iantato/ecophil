@@ -13,10 +13,8 @@ import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form"
 
@@ -24,20 +22,13 @@ import { DialogClose, DialogFooter } from "@/components/ui/dialog"
 
 import { Input } from "@/components/ui/input"
 
-interface DomainProps {
-    initialDomain?: string
-    onSaved?: (domain: string) => void
-}
+import { normalizeHost } from "@/lib/utils"
 
 const formSchema = z.object({
-    domain: z.url({message: "Invalid domain URL. Insert a valid URL."}).nonempty()
+    domain: z.url({message: "Invalid domain URL. Insert a valid URL (don't forget the https://)."}).nonempty()
 })
 
-function normalizeHost(value: string) {
-    return value.trim().replace('https://', '').replace('http://', '').replace(/\/$/, '')
-}
-
-export function DomainForm({ initialDomain, onSaved }: DomainProps) {
+export function DomainForm() {
 
     const closeRef = useRef<HTMLButtonElement>(null)
 
@@ -60,7 +51,6 @@ export function DomainForm({ initialDomain, onSaved }: DomainProps) {
             })
 
             if (res.ok) {
-                onSaved?.(host)
                 toast.success(
                     <>Domain Updated to <span className="font-mono text-xs bg-gray-100 px-1 rounded">{values.domain}</span></>
                 )
